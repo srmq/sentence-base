@@ -25,6 +25,15 @@ public class SentenceCompletionQuestions {
 			this.tokensAfter = new ArrayList<String>(capacity);
 			this.options = new ArrayList<String>(5);
 		}
+		
+		public Question(List<String> tokensBefore, List<String> tokensAfter, List<String> options, int correctIndex) {
+			this.tokensBefore = tokensBefore;
+			this.tokensAfter = tokensAfter;
+			this.options = options;
+			this.correctIndex = correctIndex;
+			this.correctLetter = (char)('a' + correctIndex);
+			this.correctWord = options.get(correctIndex);
+		}
 
 		public List<String> getTokensBefore() {
 			return tokensBefore;

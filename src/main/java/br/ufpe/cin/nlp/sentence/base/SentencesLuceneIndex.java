@@ -65,8 +65,7 @@ public class SentencesLuceneIndex {
             dir = FSDirectory.open(path);
 	}
 	
-	private IndexWriter createWriter() throws IOException {
-		if (this.analyzer == null) {
+	private IndexWriter createWriter() throws IOException {		if (this.analyzer == null) {
 			this.analyzer = new StandardAnalyzer(new InputStreamReader(new ByteArrayInputStream("".getBytes())));
 		}
 		if (this.parser == null) {
@@ -127,14 +126,15 @@ public class SentencesLuceneIndex {
 	}
 	
 	public static void main(String[] args) throws IOException, ParseException {
-		SentencesLuceneIndex index = new SentencesLuceneIndex("test-index", true);
-		index.addSentence("the book is on the table");
+		SentencesLuceneIndex index = new SentencesLuceneIndex("/home/srmq/git/dl4jtests/dl4jtests/Holmes-sentence-index", true);
+		index.commit();
+		/*index.addSentence("the book is on the table");
 		index.addSentence("THE BOOK IS ON THE TABLE");
 		index.addSentence("the quick fox jumped over the lazy dog");
 		index.addSentence("THE QUICK FOX JUMPED OVER THE LAZY DOG");
 		index.commit();
-		index.refresh();
-		String[] searchWords = {"dog", "fox", "the", "book"};
+		index.refresh();*/
+		String[] searchWords = {"\"am not hateful\""};
 		for (int i = 0; i < searchWords.length; i++) {
 			System.out.println("Searching for " + searchWords[i]);
 			SentenceIndexIterator iter = index.searchSentencesWithWord(searchWords[i], 10);
