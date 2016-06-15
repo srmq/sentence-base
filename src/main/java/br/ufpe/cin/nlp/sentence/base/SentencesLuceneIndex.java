@@ -32,7 +32,6 @@ public class SentencesLuceneIndex {
     private   transient Analyzer analyzer;
     private transient IndexWriter writer;
     private transient SearcherManager manager;
-    private transient QueryParser parser;
     
 	public SentencesLuceneIndex(String indexPath, boolean reuse) throws IOException {
 		File filePath = new File(indexPath);
@@ -65,11 +64,9 @@ public class SentencesLuceneIndex {
             dir = FSDirectory.open(path);
 	}
 	
-	private IndexWriter createWriter() throws IOException {		if (this.analyzer == null) {
+	private IndexWriter createWriter() throws IOException {		
+		if (this.analyzer == null) {
 			this.analyzer = new StandardAnalyzer(new InputStreamReader(new ByteArrayInputStream("".getBytes())));
-		}
-		if (this.parser == null) {
-			this.parser = new QueryParser("sentence", this.analyzer);
 		}
 		IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
         iwc.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
@@ -104,7 +101,9 @@ public class SentencesLuceneIndex {
 	}
 	
 	public SentenceIndexIterator searchSentencesWithWord(String word, int maxDocs) throws IOException, ParseException {
-		Query query = this.parser.parse(word);
+		//QueryParser is not thread-safe, create a new object each time...
+		QueryParser parser = new QueryParser("sentence", this.analyzer);
+		Query query = parser.parse(word);
 		TopDocs tops;
 		IndexSearcher indexSearcher = null;
 		try {

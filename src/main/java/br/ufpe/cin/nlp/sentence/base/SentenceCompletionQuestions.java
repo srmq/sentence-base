@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,10 +71,10 @@ public class SentenceCompletionQuestions {
 
 	private void readAnswers() {
 		ClassPathResource resource = new ClassPathResource("/answers.txt");
-		File f;
+		InputStream fStream;
 		try {
-			f = resource.getFile();
-			final BufferedReader bufFile = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+			fStream = resource.getInputStream();
+			final BufferedReader bufFile = new BufferedReader(new InputStreamReader(fStream, "UTF-8"));
 			String line;
 			for (int i = 0; (line = bufFile.readLine()) != null && line.trim().length() > 0; i++) {
 				final String[] tokens = line.split(" ");
@@ -107,11 +108,11 @@ public class SentenceCompletionQuestions {
 
 	private void readQuestions() {
 		ClassPathResource resource = new ClassPathResource("/questions.txt");
-		File f;
+		InputStream fStream;
 		this.questions = new ArrayList<Question>(1040);
 		try {
-			f = resource.getFile();
-			final BufferedReader bufFile = new BufferedReader(new InputStreamReader(new FileInputStream(f), "UTF-8"));
+			fStream = resource.getInputStream();
+			final BufferedReader bufFile = new BufferedReader(new InputStreamReader(fStream, "UTF-8"));
 			String line;
 			int lastQuestion = 0;
 			Question q = null;
